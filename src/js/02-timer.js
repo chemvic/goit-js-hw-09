@@ -14,6 +14,9 @@ startBtnEl.setAttribute("disabled", true);
 
 const selectedDates = null;
 let selectedTime = 0;
+let deltaTime = 0;
+let currentTime = 0;
+
 const options = {
     enableTime: true,
     time_24hr: true,
@@ -24,8 +27,8 @@ const options = {
 
         console.log(selectedDates[0]);
         selectedTime = selectedDates[0].getTime();
-        const currentTime = Date.now();
-        const deltaTime = selectedTime - currentTime;
+        currentTime = Date.now();
+        deltaTime = selectedTime - currentTime;
         
         if (deltaTime <= 0) {
             Notify.failure("Please choose a date in the future");
@@ -50,9 +53,9 @@ const backCount= {
         this.isActive = true;
       
          intervalID = setInterval(() => {
-             const currentTime = Date.now();
+             currentTime = Date.now();
            
-             const deltaTime = selectedTime - currentTime;
+             deltaTime = selectedTime - currentTime;
              
 
                   if (deltaTime<=0) {                 
