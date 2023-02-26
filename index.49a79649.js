@@ -1,0 +1,2 @@
+var makePromise=function(){return new Promise((function(o,e){var n=Math.random()>.5;console.log(n);setTimeout((function(){n&&o("А я тебя поймал!!!)))","color:green; font-size:24px;"),e("Ой, убежал(((","color:red; font-size:24px;")}),1e3)}))};makePromise().then((function(o){return console.log("%c А я тебя поймал!!!)))","color:green; font-size:24px;")})).catch((function(o){return console.log("%c Ой, убежал(((","color:red; font-size:24px;")}));
+//# sourceMappingURL=index.49a79649.js.map
