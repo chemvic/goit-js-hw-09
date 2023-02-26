@@ -9,37 +9,73 @@ const hoursEl = document.querySelector('span[data-hours]');
 const minutesEl = document.querySelector('span[data-minutes]');
 const secondsEl = document.querySelector('span[data-seconds]');
 
+startBtnEl.setAttribute("disabled", true);  
+
+const selectedDates = null;
+
 const options = {
-  enableTime: true,
-  time_24hr: true,
-  defaultDate: new Date(),
-  minuteIncrement: 1,
-  onClose(selectedDates) {
-      console.log(selectedDates[0]);
-     
-  },
+    enableTime: true,
+    time_24hr: true,
+    defaultDate: new Date(),
+    minuteIncrement: 1,
+
+    onClose(selectedDates) {
+
+        console.log(selectedDates[0]);
+        selectedTime = selectedDates[0].getTime();
+        const currentTime = Date.now();
+        const deltaTime = selectedTime - currentTime;
+        
+        if (deltaTime <= 0) {
+            window.alert("Please choose a date in the future");
+        } else
+            startBtnEl.removeAttribute("disabled");
+            return selectedTime;        
+    },
 };
-// flatpickr(inputEl, options);
 
-startBtnEl.addEventListener('click', onStartCount);
-
-function onStartCount(event) {
-    let intervalID = null;
+flatpickr(inputEl, options);
+let intervalID = null;
+const backCount= {
+    
+    isActive: false,
+    
  
+    start() {
+       
+        if (this.isActive) {
+            return;
+        }
+        this.isActive = true;
+      
+         intervalID = setInterval(() => {
+             const currentTime = Date.now();
+           
+             const deltaTime = selectedTime - currentTime;
+             
 
- intervalID=setInterval(() => {
-    const currentTime = Date.now();
-   const pastTime = new Date(0);
-    const deltaTime = currentTime - pastTime;
-    console.log(deltaTime);
-    // console.log(currentTime);
-    // console.log(pastTime);
-}, 1000);
-clearInterval(intervalID);
+                  if (deltaTime<=0) {                 
+                 clearInterval(intervalID);
+                      return;
+                  }
+     
+             const { days, hours, minutes, seconds } = convertMs(deltaTime);     
+ 
+             updateCounterFace({ days, hours, minutes, seconds });
+             
+         }, 1000);       
+       
+    }
 }
 
- 
+ startBtnEl.addEventListener('click', backCount.start);
 
+function updateCounterFace({ days, hours, minutes, seconds }) {
+    daysEl.textContent = `${days}`;
+    hoursEl.textContent = addLeadingZero(`${hours}`);
+    minutesEl.textContent = addLeadingZero(`${minutes}`);
+    secondsEl.textContent = addLeadingZero(`${seconds}`);
+}
 
 
 function convertMs(ms) {
@@ -57,10 +93,9 @@ function convertMs(ms) {
   const minutes = Math.floor(((ms % day) % hour) / minute);
   // Remaining seconds
   const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+    return { days, hours, minutes, seconds };
+  }
 
-  return { days, hours, minutes, seconds };
+function addLeadingZero(value){
+    return value.padStart(2, "0");
 }
-
-// console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
-// console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
-// console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
