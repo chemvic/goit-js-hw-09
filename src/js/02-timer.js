@@ -1,6 +1,7 @@
 import flatpickr from "flatpickr";
 // Дополнительный импорт стилей
 import "flatpickr/dist/flatpickr.min.css";
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const inputEl = document.querySelector('#datetime-picker');
 const startBtnEl = document.querySelector('button[data-start');
@@ -12,7 +13,7 @@ const secondsEl = document.querySelector('span[data-seconds]');
 startBtnEl.setAttribute("disabled", true);  
 
 const selectedDates = null;
-// const selectedTime = 0;
+let selectedTime = 0;
 const options = {
     enableTime: true,
     time_24hr: true,
@@ -27,7 +28,7 @@ const options = {
         const deltaTime = selectedTime - currentTime;
         
         if (deltaTime <= 0) {
-            window.alert("Please choose a date in the future");
+            Notify.failure("Please choose a date in the future");
         } else
             startBtnEl.removeAttribute("disabled");
             return selectedTime;        
