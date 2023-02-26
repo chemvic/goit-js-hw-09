@@ -12,7 +12,7 @@ const secondsEl = document.querySelector('span[data-seconds]');
 startBtnEl.setAttribute("disabled", true);  
 
 const selectedDates = null;
-
+// const selectedTime = 0;
 const options = {
     enableTime: true,
     time_24hr: true,
